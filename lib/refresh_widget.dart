@@ -36,14 +36,10 @@ class RefreshWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading && isEmptyData) {
-      return const RefreshLoader();
-    }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        if (showAdditionalLoader)
+        if (showAdditionalLoader && !isEmptyData)
           Opacity(
             opacity: isLoading ? 1 : 0,
             child: const LinearProgressIndicator(),
@@ -55,6 +51,10 @@ class RefreshWidget extends StatelessWidget {
               child: Builder(
                 builder: (BuildContext context) {
                   if (isEmptyData) {
+                    if (isLoading) {
+                      return const RefreshLoader();
+                    }
+
                     if (!isError) {
                       return RefreshScrollBody(
                         child: Builder(
